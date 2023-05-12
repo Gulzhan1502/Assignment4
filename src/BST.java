@@ -3,35 +3,90 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 public class BST<K extends Comparable<K>, V> {
-    private Node root;
+    private Node<K,V> root;
+    private int size;
 
-    private class Node {
+    private class Node <K,V>{
+        public int size;
         private K key;
-        private V val;
-        private Node left, right;
-        private int size;
+        private V value;
+        private Node<K, V> left, right;
+
 
         public Node(K key, V val) {
             this.key = key;
-            this.val = val;
-            this.size = 1;
+            this.value = value;
+            left=right=null;
+            size = 1;
         }
     }
-    public void put(K key, V val) {
-        root = put(root, key, val);
-    }
-    public boolean isEmpty(){
-        return root == null;
+    public boolean isEmpty() {
+        return size == 0;
     }
 
+    public void insert(K key, V value){
+        root = insert(root, key, value);
+    }
+    private Node<K, V>  insert(Node<K,V> node, K key, V value){
+        if (node==null){
+            size++;
+            return new Node<>(key, value);
+        }
+        int cmp = key.compareTo(node.key);
+        if (cmp < 0){
+            node.left = insert(node.left, key, value);
+        }
+        else if (cmp > 0){
+            node.right = insert(node.right, key, value);
+        }
+        else {
+            node.value = value;
+        }
+        return node;
+    }
+
+    public void deleteKey(K key) {
+        root = deleteRec(root, key);
+    }
+
+    private Node<K, V> deleteRec(Node<K, V> root, K key) {
+
+        if (root == null) { //If the tree is empty
+            return null;
+        }
+        int cmp = key.compareTo(root.key);
+        if (cmp < 0){
+            root.left = deleteRec(root.left, key);
+        }
+        else if (cmp > 0) {
+            root.right = deleteRec(root.right, key);
+        }
+
+        else {
+            if (root.left == null) {// Node with only one child or no child
+                size--;
+                return root.right;
+            }
+            else if (root.right == null) {
+                size--;
+                return root.left;
+            }
+
+            Node<K, V> minRight = getMin(root.right);
+            root.key = minRight.key;
+            root.value = minRight.value;
+            root.right = deleteRec(root.right, minRight.key);
+        }
+        return root;
+    }
     public K getMin() {
         if (isEmpty()) {
-            System.out.println ("Tree is empty");
+            return null;
         }
         return getMin(root).key;
     }
 
-    private Node getMin(Node temp) {
+    private Node<K, V> getMin(Node<K, V> temp) {
         if (temp.left == null) {
             return temp;
         }
@@ -40,56 +95,35 @@ public class BST<K extends Comparable<K>, V> {
 
     public K getMax() {
         if (isEmpty()) {
-            System.out.println ("Tree is empty");
+            return null;
         }
         return getMax(root).key;
     }
 
-    private Node getMax(Node temp) {
-        if (temp.right == null){
-            return temp;
+    private Node<K, V> getMax(Node<K, V> node) {
+        if (node.right == null){
+            return node;
         }
-        return getMax(temp.right);
+        return getMax(node.right);
     }
 
-    private Node put(Node temp, K key, V val) {
-        if (temp == null) {
-            return new Node(key, val);
-        }
-        int cmp = key.compareTo(temp.key);
-        if (cmp < 0){
-            temp.left = put(temp.left, key, val);
-        }
-        else if (cmp > 0){
-            temp.right = put(temp.right, key, val);
-        }
-        else {
-            temp.val = val;
-        }
-        temp.size = 1 + size(temp.left) + size(temp.right);
-        return temp;
-    }
-
-    private int size(Node temp) {
-        if (temp == null){
+    private int size(Node<K, V> node) {
+        if (node == null){
             return 0;
         }
-        else return temp.size;
+        else return node.size;
     }
 
-
-    public List<K> inOrderTraversal() {
-        List<K> keys = new ArrayList<>();
-        inOrderTraversal(root, keys);
-        return keys;
+    void inOrderTraversal() {
+        inOrderTraversalRec(root);
     }
 
-    private void inOrderTraversal(Node temp, List<K> keys) {
-        if (temp == null){
-            return;
+    void inOrderTraversalRec(Node root)
+    {
+        if (root != null) {
+            inOrderTraversalRec(root.left);
+            System.out.print(root.key + " ");
+            inOrderTraversalRec(root.right);
         }
-        inOrderTraversal(temp.left, keys);
-        keys.add(temp.key);
-        inOrderTraversal(temp.right, keys);
     }
 }

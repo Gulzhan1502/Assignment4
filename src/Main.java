@@ -1,17 +1,21 @@
-// Press ⇧ twice to open the Search Everywhere dialog and type `show whitespaces`,
-// then press Enter. You can now see whitespace characters in your code.
+
 public class Main {
     public static void main(String[] args) {
-        // Press ⌥⏎ with your caret at the highlighted text to see how
-        // IntelliJ IDEA suggests fixing it.
-        System.out.printf("Hello and welcome!");
+        BST tree = new BST();
+        tree.put(50);
+        tree.put(30);
+        tree.put(20);
+        tree.put(40);
+        tree.put(70);
+        tree.put(60);
+        tree.put(80);
 
-        // Press ⌃R or click the green arrow button in the gutter to run the code.
-        for (int i = 1; i <= 5; i++) {
+        // Print inorder traversal of the BST
+        tree.inOrderTraversal();
 
-            // Press ⌃D to start debugging your code. We have set one breakpoint
-            // for you, but you can always add more by pressing ⌘F8.
-            System.out.println("i = " + i);
-        }
+
+
+
+
     }
 }
