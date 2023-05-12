@@ -1,17 +1,28 @@
 
 public class Main {
     public static void main(String[] args) {
-        BST tree = new BST();
-        tree.put(50);
-        tree.put(30);
-        tree.put(20);
-        tree.put(40);
-        tree.put(70);
-        tree.put(60);
-        tree.put(80);
+        BST<Integer, String> bst = new BST<>();
+        bst.insert(50, "A");
+        bst.insert(30, "B");
+        bst.insert(20, "C");
+        bst.insert(40, "D");
+        bst.insert(70, "E");
+        bst.insert(60, "F");
+        bst.insert(80, "G");
 
-        // Print inorder traversal of the BST
-        tree.inOrderTraversal();
+        System.out.println("In-order traversal: ");
+        bst.inOrderTraversal();
+        System.out.println();
+
+        System.out.println("Minimum key: " + bst.getMin());
+        System.out.println("Maximum key: " + bst.getMax());
+
+        bst.deleteKey(20);
+        bst.deleteKey(30);
+        bst.deleteKey(50);
+
+        System.out.println("In-order traversal after deleting keys: ");
+        bst.inOrderTraversal();
 
 
 
